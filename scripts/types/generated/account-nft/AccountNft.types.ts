@@ -11,9 +11,13 @@ export interface InstantiateMsg {
   symbol: string;
   [k: string]: unknown;
 }
-export type ExecuteMsg = "accept_ownership" | {
+export type ExecuteMsg = {
   propose_new_owner: {
     new_owner: string;
+    [k: string]: unknown;
+  };
+} | {
+  accept_ownership: {
     [k: string]: unknown;
   };
 } | {
@@ -79,6 +83,11 @@ export type Uint64 = string;
 export type QueryMsg = {
   proposed_new_owner: {};
 } | {
+  all_debt_shares: {
+    limit?: number | null;
+    start_after?: [string, string] | null;
+  };
+} | {
   owner_of: {
     include_expired?: boolean | null;
     token_id: string;
@@ -128,6 +137,14 @@ export type QueryMsg = {
 } | {
   minter: {};
 };
+export type Uint128 = string;
+export type ArrayOf_SharesResponseItem = SharesResponseItem[];
+export interface SharesResponseItem {
+  denom: string;
+  shares: Uint128;
+  token_id: string;
+  [k: string]: unknown;
+}
 export interface AllNftInfoResponseForEmpty {
   access: OwnerOfResponse;
   info: NftInfoResponseForEmpty;

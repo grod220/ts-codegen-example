@@ -1,6 +1,6 @@
 use std::convert::TryInto;
 
-use cosmwasm_std::{Binary, Empty, StdError};
+use cosmwasm_std::{Binary, Empty, StdError, Uint128};
 use cw721::Expiration;
 use cw721_base::{ContractError, ExecuteMsg as ParentExecuteMsg};
 use schemars::JsonSchema;
@@ -17,7 +17,7 @@ pub enum ExecuteMsg {
     ProposeNewOwner { new_owner: String },
 
     /// Accept the proposed ownership transfer
-    AcceptOwnership,
+    AcceptOwnership {},
 
     /// Mint a new NFT to the specified user; can only be called by the contract minter
     Mint { user: String },

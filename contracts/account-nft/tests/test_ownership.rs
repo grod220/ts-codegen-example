@@ -105,7 +105,7 @@ fn accept_proposed_owner(
     app.execute_contract(
         sender.clone(),
         contract_addr.clone(),
-        &ExtendedExecuteMsg::AcceptOwnership,
+        &ExtendedExecuteMsg::AcceptOwnership {},
         &[],
     )
 }

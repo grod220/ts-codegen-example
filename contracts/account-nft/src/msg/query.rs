@@ -1,6 +1,5 @@
-use std::convert::TryInto;
-
 use cosmwasm_schema::{cw_serde, QueryResponses};
+use cosmwasm_std::Uint128;
 #[allow(unused_imports)]
 use cosmwasm_std::{Empty, StdError};
 #[allow(unused_imports)]
@@ -10,6 +9,9 @@ use cw721::{
 };
 #[allow(unused_imports)]
 use cw721_base::{MinterResponse, QueryMsg as ParentQueryMsg};
+use schemars::JsonSchema;
+use serde::{Deserialize, Serialize};
+use std::convert::TryInto;
 
 #[cw_serde]
 #[derive(QueryResponses)]
@@ -19,6 +21,13 @@ pub enum QueryMsg {
     //--------------------------------------------------------------------------------------------------
     #[returns(String)]
     ProposedNewOwner {},
+
+    /// Enumerate debt shares for all token positions; start_after accepts (token_id, denom)
+    #[returns(Vec<SharesResponseItem>)]
+    AllDebtShares {
+        start_after: Option<(String, String)>,
+        limit: Option<u32>,
+    },
 
     //--------------------------------------------------------------------------------------------------
     // Base cw721 messages
@@ -97,6 +106,14 @@ pub enum QueryMsg {
     /// Return the minter
     #[returns(MinterResponse)]
     Minter {},
+}
+
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq, JsonSchema)]
+#[serde(rename_all = "snake_case")]
+pub struct SharesResponseItem {
+    pub token_id: String,
+    pub denom: String,
+    pub shares: Uint128,
 }
 
 impl TryInto<ParentQueryMsg> for QueryMsg {
