@@ -4,18 +4,18 @@ import { printGreen, printRed } from '../utils/chalk'
 import { readdir } from 'fs/promises'
 
 void (async function () {
-  try {
-    const schemasDir = resolve(join(__dirname, '../../../schemas'))
-    const schemas = await readdir(schemasDir)
+  const schemasDir = resolve(join(__dirname, '../../../schemas'))
+  const schemas = await readdir(schemasDir)
 
-    for (const schema of schemas) {
+  for (const schema of schemas) {
+    try {
       await codegen({
         contracts: [`${schemasDir}/${schema}`],
         outPath: `./types/generated/${schema}`,
       })
+      printGreen(`Success ✨ ${schema} types generated`)
+    } catch (e) {
+      printRed(`Error with ${schema}: ${e}`)
     }
-    printGreen('✨ all done!')
-  } catch (e) {
-    printRed(e)
   }
 })()
