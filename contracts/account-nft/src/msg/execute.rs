@@ -1,6 +1,6 @@
 use std::convert::TryInto;
 
-use cosmwasm_std::{Binary, Empty, StdError, Uint128};
+use cosmwasm_std::{Binary, Empty, StdError};
 use cw721::Expiration;
 use cw721_base::{ContractError, ExecuteMsg as ParentExecuteMsg};
 use schemars::JsonSchema;

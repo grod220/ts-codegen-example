@@ -83,6 +83,11 @@ export type Uint64 = string;
 export type QueryMsg = {
   proposed_new_owner: {};
 } | {
+  allowed_vaults: {
+    limit?: number | null;
+    start_after?: VaultBaseForString | null;
+  };
+} | {
   all_debt_shares: {
     limit?: number | null;
     start_after?: [string, string] | null;
@@ -139,6 +144,7 @@ export type QueryMsg = {
 } | {
   minter: {};
 };
+export type VaultBaseForString = string;
 export type Uint128 = string;
 export type ArrayOf_SharesResponseItem = SharesResponseItem[];
 export interface SharesResponseItem {
@@ -179,6 +185,7 @@ export interface TokensResponse {
   tokens: string[];
   [k: string]: unknown;
 }
+export type ArrayOf_VaultBaseForString = VaultBaseForString[];
 export interface ApprovalResponse {
   approval: Approval;
   [k: string]: unknown;

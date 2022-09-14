@@ -7,10 +7,17 @@
 
 import { CosmWasmClient, SigningCosmWasmClient, ExecuteResult } from "@cosmjs/cosmwasm-stargate";
 import { Coin, StdFee } from "@cosmjs/amino";
-import { InstantiateMsg, ExecuteMsg, Binary, Expiration, Timestamp, Uint64, QueryMsg, Uint128, ArrayOf_SharesResponseItem, SharesResponseItem, AllNftInfoResponseForEmpty, OwnerOfResponse, Approval, NftInfoResponseForEmpty, Empty, OperatorsResponse, String, TokensResponse, ApprovalResponse, ApprovalsResponse, ContractInfoResponse, MinterResponse, NumTokensResponse } from "./AccountNft.types";
+import { InstantiateMsg, ExecuteMsg, Binary, Expiration, Timestamp, Uint64, QueryMsg, VaultBaseForString, Uint128, ArrayOf_SharesResponseItem, SharesResponseItem, AllNftInfoResponseForEmpty, OwnerOfResponse, Approval, NftInfoResponseForEmpty, Empty, OperatorsResponse, String, TokensResponse, ArrayOf_VaultBaseForString, ApprovalResponse, ApprovalsResponse, ContractInfoResponse, MinterResponse, NumTokensResponse } from "./AccountNft.types";
 export interface AccountNftReadOnlyInterface {
   contractAddress: string;
   proposedNewOwner: () => Promise<String>;
+  allowedVaults: ({
+    limit,
+    startAfter
+  }: {
+    limit?: number;
+    startAfter?: VaultBaseForString;
+  }) => Promise<ArrayOfVaultBaseForString>;
   allDebtShares: ({
     limit,
     startAfter
@@ -93,6 +100,7 @@ export class AccountNftQueryClient implements AccountNftReadOnlyInterface {
     this.client = client;
     this.contractAddress = contractAddress;
     this.proposedNewOwner = this.proposedNewOwner.bind(this);
+    this.allowedVaults = this.allowedVaults.bind(this);
     this.allDebtShares = this.allDebtShares.bind(this);
     this.allPreviousOwners = this.allPreviousOwners.bind(this);
     this.ownerOf = this.ownerOf.bind(this);
@@ -111,6 +119,20 @@ export class AccountNftQueryClient implements AccountNftReadOnlyInterface {
   proposedNewOwner = async (): Promise<String> => {
     return this.client.queryContractSmart(this.contractAddress, {
       proposed_new_owner: {}
+    });
+  };
+  allowedVaults = async ({
+    limit,
+    startAfter
+  }: {
+    limit?: number;
+    startAfter?: VaultBaseForString;
+  }): Promise<ArrayOfVaultBaseForString> => {
+    return this.client.queryContractSmart(this.contractAddress, {
+      allowed_vaults: {
+        limit,
+        start_after: startAfter
+      }
     });
   };
   allDebtShares = async ({

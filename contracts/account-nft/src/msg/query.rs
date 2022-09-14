@@ -22,6 +22,12 @@ pub enum QueryMsg {
     #[returns(String)]
     ProposedNewOwner {},
 
+    #[returns(Vec<VaultUnchecked>)]
+    AllowedVaults {
+        start_after: Option<VaultUnchecked>,
+        limit: Option<u32>,
+    },
+
     /// Enumerate debt shares for all token positions; start_after accepts (token_id, denom)
     #[returns(Vec<SharesResponseItem>)]
     AllDebtShares {
@@ -110,6 +116,11 @@ pub enum QueryMsg {
     #[returns(MinterResponse)]
     Minter {},
 }
+
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq, JsonSchema)]
+pub struct VaultBase<T>(T);
+
+pub type VaultUnchecked = VaultBase<String>;
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq, JsonSchema)]
 #[serde(rename_all = "snake_case")]
