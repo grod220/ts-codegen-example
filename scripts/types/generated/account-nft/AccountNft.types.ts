@@ -88,6 +88,8 @@ export type QueryMsg = {
     start_after?: [string, string] | null;
   };
 } | {
+  all_previous_owners: string;
+} | {
   owner_of: {
     include_expired?: boolean | null;
     token_id: string;
@@ -172,6 +174,7 @@ export interface OperatorsResponse {
   operators: Approval[];
   [k: string]: unknown;
 }
+export type String = string;
 export interface TokensResponse {
   tokens: string[];
   [k: string]: unknown;
@@ -197,4 +200,3 @@ export interface NumTokensResponse {
   count: number;
   [k: string]: unknown;
 }
-export type String = string;
